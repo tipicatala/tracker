@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'CeraPro';
+  font-style: normal;
+  font-weight: 700;
+  src: url('@/assets/CeraPro-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CeraPro';
+  font-style: normal;
+  font-weight: 500;
+  src: url('@/assets/CeraPro-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'CeraPro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('@/assets/CeraPro-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'TTTravels';
+  font-style: normal;
+  font-weight: 600;
+  src: url('@/assets/TTTravels-DemiBold.ttf') format('truetype');
+}
