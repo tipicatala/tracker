@@ -6,9 +6,7 @@ import { reducer } from "../../reducers";
 import { getUser, postUser } from '../../api/dbRequests';
 
 const Login = () => {
-  const [isShown, setIsShown] = useState(true);
-
-  const [state, dispatch] = useReducer(reducer, { id: "" });
+  const [state, dispatch] = useReducer(reducer, { id: "", isFirstTime: false });
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value.toLowerCase();
@@ -19,17 +17,15 @@ const Login = () => {
       if (!data) {
         const data = await postUser(value);
 
-        dispatch({ type: "login", id: data.insertedId })
-        setIsShown(false);
+        dispatch({ type: "login", id: data.insertedId, isFirstTime: true })
         return;
       }
 
-      setIsShown(false);
       dispatch({ type: "login", id: data._id })
     }
   }
 
-  return isShown ? (
+  return (
     <div className={s.root}>
       <div className={s.title}>Enter your nickname, please</div>
       <input
@@ -37,7 +33,7 @@ const Login = () => {
         onKeyDown={handleKeyDown}
       ></input>
     </div>
-  ): <></>;
+  );
 };
 
 export default Login;
