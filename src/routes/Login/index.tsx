@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react';
 import s from "./style.module.scss";
 
 import { reducer } from "../../reducers";
-import { getUser, postUser } from '../../api/dbRequests';
+import { getUser, postUser } from '../../api/user';
 
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, { id: "", isFirstTime: false });
@@ -21,7 +21,7 @@ const Login = () => {
         return;
       }
 
-      dispatch({ type: "login", id: data._id })
+      dispatch({ type: "login", id: data._id });
     }
   }
 

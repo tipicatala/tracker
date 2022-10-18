@@ -23,6 +23,18 @@ recordRoutes.route("/users").get(function (req, res) {
    });
 });
 
+recordRoutes.route("/activities").get(function (req, res) {
+ let db_connect = dbo.getDb();
+
+ db_connect
+   .collection("activities")
+   .find({})
+   .toArray(function (err, result) {
+     if (err) throw err;
+     res.json(result);
+   });
+});
+
 // This section will help you get a single record by id
 recordRoutes.route("/user/:name").get(function (req, res) {
 
@@ -68,17 +80,6 @@ recordRoutes.route("/user/:name").get(function (req, res) {
       console.log("1 document updated");
       response.json(res);
     });
- });
-  
- // This section will help you delete a record
- recordRoutes.route("/:id").delete((req, response) => {
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection("records").deleteOne(myquery, function (err, obj) {
-    if (err) throw err;
-    console.log("1 document deleted");
-    response.json(obj);
-  });
  });
   
  module.exports = recordRoutes;
