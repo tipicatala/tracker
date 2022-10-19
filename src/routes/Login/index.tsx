@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import s from "./style.module.scss";
 
@@ -6,6 +7,7 @@ import { reducer } from "../../reducers";
 import { getUser, postUser } from '../../api/user';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, { id: "", isFirstTime: false });
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -18,6 +20,7 @@ const Login = () => {
         const data = await postUser(value);
 
         dispatch({ type: "login", id: data.insertedId, isFirstTime: true })
+        navigate("/initial")
         return;
       }
 

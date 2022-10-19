@@ -1,17 +1,13 @@
 export const getUser = async (value: string) => {
   const res = await fetch(
-    `${import.meta.env.VITE_URL}:${
-      import.meta.env.VITE_PORT
-    }/user/${value}`,
+    `${import.meta.env.VITE_URL}/user/${value}`,
   );
   return await res.json();
 }
 
 export const postUser = async (value: string) => {
   const res = await fetch(
-    `${import.meta.env.VITE_URL}:${
-      import.meta.env.VITE_PORT
-    }/user/add`,
+    `${import.meta.env.VITE_URL}/user/add`,
     {
       headers: {
         'Content-Type': 'application/json'
