@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import s from "./style.module.scss";
@@ -23,12 +23,13 @@ const Login = () => {
         const data = await postUser(value);
 
         setIsFirstTime(true);
-        setId(data.insertedId);
+        setId(value);
 
         navigate("/initial");
         return;
       }
-      setId(data.insertedId);
+      setId(value);
+      navigate("/daily");
     }
   };
 

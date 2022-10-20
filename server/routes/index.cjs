@@ -37,7 +37,6 @@ recordRoutes.route("/activities").get(function (req, res) {
 
 // This section will help you get a single record by id
 recordRoutes.route("/user/:name").get(function (req, res) {
-  console.log("jere")
   let db_connect = dbo.getDb();
   let myquery = { name: req.params.name };
 
@@ -63,16 +62,14 @@ recordRoutes.route("/user/:name").get(function (req, res) {
  });
   
  // This section will help you update a record by id.
- recordRoutes.route("/update/:id").post(function (req, response) {
+ recordRoutes.route("/update/:name").post(function (req, response) {
   let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
+  let myquery = { name: req.params.name };
   let newvalues = {
     $set: {
       probable_activities: req.body.values,
     },
   };
-
-  console.log(newvalues)
 
   db_connect
     .collection("users")
