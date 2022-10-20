@@ -1,16 +1,19 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import s from "./style.module.scss";
 
-import { reducer } from "../../reducers";
-import { getUser, postUser } from '../../api/user';
+import { useUserStore } from "../../stores/userStore";
+import { getUser, postUser } from "../../api/user";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [state, dispatch] = useReducer(reducer, { id: "", isFirstTime: false });
+  const setIsFirstTime = useUserStore((state) => state.setIsFirstTime);
+  const setId = useUserStore((state) => state.setId);
 
-  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     const value = (event.target as HTMLInputElement).value.toLowerCase();
 
     if (event.key === "Enter") {
@@ -19,22 +22,20 @@ const Login = () => {
       if (!data) {
         const data = await postUser(value);
 
-        dispatch({ type: "login", id: data.insertedId, isFirstTime: true })
-        navigate("/initial")
+        setIsFirstTime(true);
+        setId(data.insertedId);
+
+        navigate("/initial");
         return;
       }
-
-      dispatch({ type: "login", id: data._id });
+      setId(data.insertedId);
     }
-  }
+  };
 
   return (
     <div className={s.root}>
       <div className={s.title}>Enter your nickname, please</div>
-      <input
-        className={s.input}
-        onKeyDown={handleKeyDown}
-      ></input>
+      <input className={s.input} onKeyDown={handleKeyDown}></input>
     </div>
   );
 };

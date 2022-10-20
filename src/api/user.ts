@@ -1,4 +1,4 @@
-export const getUser = async (value: string) => {
+export const getUser = async (value: string) => {  
   const res = await fetch(
     `${import.meta.env.VITE_URL}/user/${value}`,
   );
@@ -17,5 +17,19 @@ export const postUser = async (value: string) => {
     }
   );
 
+  return await res.json();
+}
+
+export const setProbableActivities = async (values: string[], id: string) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_URL}/update/${id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({ values }),
+    }
+  );
   return await res.json();
 }
