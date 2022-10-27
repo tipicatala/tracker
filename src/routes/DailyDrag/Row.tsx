@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, ReactHTMLElement, useRef } from "react";
+import React, { ReactComponentElement, ReactHTMLElement, useRef, useState } from "react";
 import clsx from "clsx";
 import { useDrag, useDrop } from 'react-dnd'
 
@@ -12,9 +12,11 @@ interface IProps {
   moveRow: (dragIndex: any, hoverIndex: any) => void
 }
 
-function Row({ el, setActivities, activities, index, moveRow }: IProps) {
+function Row({ el, index, moveRow }: IProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const handleRowClick = (el: string) => setActivities((prev) => [...prev, el]);
+  const [isDraging, setIsDraging] = useState(false);
+
+  // const handleRowClick = (el: string) => setActivities((prev) => [...prev, el]);
 
   const [{ handlerId }, drop] = useDrop({
     accept: "Row",
@@ -81,8 +83,9 @@ function Row({ el, setActivities, activities, index, moveRow }: IProps) {
       ref={ref}
       style={{ opacity }}
       data-handler-id={handlerId}
-      className={clsx(s.row, activities.includes(el) && s.row_selected)}
-      onClick={() => handleRowClick(el)}
+      className={clsx(s.row, isDraging && s.row_selected)}
+      onDragStart={() => setIsDraging(true)}
+      onDragEnd={() => setIsDraging(false)}
     >
       {el}
     </div>

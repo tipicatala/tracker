@@ -29,7 +29,7 @@ const Login = () => {
         return;
       }
       setId(value);
-      navigate("/daily");
+      navigate("/daily-select");
     }
   };
 
