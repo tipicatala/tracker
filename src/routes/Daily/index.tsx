@@ -1,74 +1,64 @@
-import { useReducer, useState, useRef, useEffect, useCallback } from "react";
-import useSWR from "swr";
-import clsx from "clsx";
+import { useState, useEffect, useCallback } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import update from 'immutability-helper'
+import update from "immutability-helper";
 
 import { useUserStore } from "../../stores/userStore";
-import { setProbableActivities, getUser } from "../../api/user";
+import { getUser } from "../../api/user";
 
-import s from "./style.module.scss";
-
+import Form from "../../components/Form";
 import Button from "../../components/Button";
 import Row from "./Row";
 
 function Daily() {
-  const dragItem = useRef<number | null>(null);
-  const dragOverItem = useRef<number | null>(null);
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+  const [allActivities, setAllActivities] = useState([""]);
 
-  const [activities, setActivities] = useState<string[]>([]);
-  const [data, setData] = useState([""]);
   const id = useUserStore((state) => state.id);
 
   useEffect(() => {
     (async function () {
       const data = await getUser(id);
-      setData(data.probable_activities);
+      setAllActivities(data.probable_activities);
     })();
   }, []);
 
-  const handleButtonClick = async () =>
-    await setProbableActivities(activities, id);
+  const handleButtonClick = () => setSelectedActivities(selectedActivities);
 
-  const moveRow = useCallback((dragIndex:number, hoverIndex:number) => {
-      setData((prevCards) =>
-        update(prevCards, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, prevCards[dragIndex]],
-          ],
-        }),
-      )
-  }, [])
+  const moveRow = useCallback((dragIndex: number, hoverIndex: number) => {
+    setAllActivities((prevCards) =>
+      update(prevCards, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, prevCards[dragIndex]],
+        ],
+      })
+    );
+  }, []);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={s.root}>
-        <div className={s.card}>
-          <div className={s.title}>
-            <div>Choose or add things that you did today,</div>
-            <div>select time frame</div>
-            and locate in order of completion each task
-          </div>
+      <Form
+        title={"Choose or add things that you did today"}
+        renderRows={() => (
           <div>
-            {data &&
-              data.map((el: string, index: number) => (
+            {allActivities &&
+              allActivities.map((el: string, index: number) => (
                 <Row
                   index={index}
                   key={el}
                   el={el}
-                  setActivities={setActivities}
-                  activities={activities}
+                  setActivities={setSelectedActivities}
+                  activities={selectedActivities}
                   moveRow={moveRow}
                 />
               ))}
           </div>
-          <div className={s.button}>
-            {/* <Button text="Continue" handleClick={handleButtonClick}/> */}
-          </div>
-        </div>
-      </div>
+        )}
+        renderButton={() => (
+          <Button text="Continue" handleClick={handleButtonClick} />
+        )}
+      />
     </DndProvider>
   );
 }

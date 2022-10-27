@@ -9,6 +9,7 @@ import { setProbableActivities } from "../../api/user";
 
 import s from "./style.module.scss";
 
+import Form from "../../components/Form";
 import Button from "../../components/Button";
 
 function Initial() {
@@ -25,11 +26,9 @@ function Initial() {
   };
 
   return (
-    <div className={s.root}>
-      <div className={s.card}>
-        <div className={s.title}>
-          Choose or add activities that you are most likely to do
-        </div>
+    <Form
+      title={"Choose or add activities that you are most likely to do"}
+      renderRows={() => (
         <div>
           {data &&
             data.map((el: { name: string; _id: string }) => (
@@ -45,11 +44,11 @@ function Initial() {
               </div>
             ))}
         </div>
-        <div className={s.button}>
-          <Button text="Continue" handleClick={handleButtonClick} />
-        </div>
-      </div>
-    </div>
+      )}
+      renderButton={() => (
+        <Button text="Continue" handleClick={handleButtonClick} />
+      )}
+    />
   );
 }
 
