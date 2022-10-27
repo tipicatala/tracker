@@ -4,12 +4,12 @@ import s from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../stores/userStore";
-import { getUser } from "../../api/user";
+import { getUser, setTodayActivities } from "../../api/user";
 
 import Form from "../../components/Form";
 import Button from "../../components/Button";
 
-function Daily() {
+function DailySelect() {
   const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
   const [allActivities, setAllActivities] = useState([""]);
   const navigate = useNavigate();
@@ -23,7 +23,10 @@ function Daily() {
     })();
   }, []);
 
-  const handleButtonClick = () => navigate("/daily-drag");
+  const handleButtonClick = async () => {
+    await setTodayActivities(selectedActivities, id);
+    navigate("/daily-drag");
+  };
   const handleRowClick = (el: string) => setSelectedActivities((prev) => [...prev, el]);
 
   return (
@@ -53,4 +56,4 @@ function Daily() {
   );
 }
 
-export default Daily;
+export default DailySelect;

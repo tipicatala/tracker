@@ -6,15 +6,16 @@ import s from "./style.module.scss";
 
 interface IProps {
   el: string,
-  setActivities: React.Dispatch<React.SetStateAction<string[]>>,
-  activities: string[],
+  // setActivities: React.Dispatch<React.SetStateAction<string[]>>,
+  // activities: string[],
   index: number,
   moveRow: (dragIndex: any, hoverIndex: any) => void
 }
 
 function Row({ el, index, moveRow }: IProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [isDraging, setIsDraging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [dragIndex, setDragIndex] = useState(-1);
 
   // const handleRowClick = (el: string) => setActivities((prev) => [...prev, el]);
 
@@ -30,6 +31,7 @@ function Row({ el, index, moveRow }: IProps) {
         return
       }
       const dragIndex = (item as { index: number}).index
+      setDragIndex(dragIndex);
       const hoverIndex = index
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -83,9 +85,18 @@ function Row({ el, index, moveRow }: IProps) {
       ref={ref}
       style={{ opacity }}
       data-handler-id={handlerId}
-      className={clsx(s.row, isDraging && s.row_selected)}
-      onDragStart={() => setIsDraging(true)}
-      onDragEnd={() => setIsDraging(false)}
+      className={clsx(s.row, isHovered && s.row_selected)}
+      onMouseEnter={() => {
+        if (dragIndex === -1) {
+          setIsHovered(true)
+        }
+      }}
+      onMouseLeave={() => {
+        console.log({dragIndex, index, el})
+
+        setIsHovered(false)
+        setDragIndex(-1);
+      }}
     >
       {el}
     </div>

@@ -4,26 +4,30 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
 
 import { useUserStore } from "../../stores/userStore";
-import { getUser } from "../../api/user";
+import { getUser, getTodayActivities } from "../../api/user";
 
 import Form from "../../components/Form";
 import Button from "../../components/Button";
 import Row from "./Row";
 
-function Daily() {
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+function DailyDrag() {
   const [allActivities, setAllActivities] = useState([""]);
+  // const [hoveredRow, setHoveredRow] = useState(-1);
 
   const id = useUserStore((state) => state.id);
 
   useEffect(() => {
     (async function () {
-      const data = await getUser(id);
-      setAllActivities(data.probable_activities);
+      const data = await getTodayActivities(id);
+
+      console.log(data)
+      setAllActivities([]);
     })();
   }, []);
 
-  const handleButtonClick = () => setSelectedActivities(selectedActivities);
+  const handleButtonClick = () => {
+    // setTodayActivities(all)
+  };
 
   const moveRow = useCallback((dragIndex: number, hoverIndex: number) => {
     setAllActivities((prevCards) =>
@@ -48,8 +52,8 @@ function Daily() {
                   index={index}
                   key={el}
                   el={el}
-                  setActivities={setSelectedActivities}
-                  activities={selectedActivities}
+                  // setActivities={setSelectedActivities}
+                  // activities={selectedActivities}
                   moveRow={moveRow}
                 />
               ))}
@@ -63,4 +67,4 @@ function Daily() {
   );
 }
 
-export default Daily;
+export default DailyDrag;

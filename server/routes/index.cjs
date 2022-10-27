@@ -47,6 +47,19 @@ recordRoutes.route("/user/:name").get(function (req, res) {
       res.json(result);
     });
  });
+
+// This section will help you get a single record by id
+recordRoutes.route("/today-activities/:name").get(function (req, res) {
+  let db_connect = dbo.getDb();
+  let myquery = { name: req.params.name };
+
+  db_connect
+    .collection("users")
+    .findOne(myquery,{ date: new Date().toISOString() }, function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+ });
   
  // This section will help you create a new record.
  recordRoutes.route("/user/add").post(function (req, response) {
@@ -61,13 +74,31 @@ recordRoutes.route("/user/:name").get(function (req, res) {
   });
  });
   
- // This section will help you update a record by id.
- recordRoutes.route("/update/:name").post(function (req, response) {
+ recordRoutes.route("/probable-actvities/:name").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { name: req.params.name };
   let newvalues = {
     $set: {
       probable_activities: req.body.values,
+      day_activities: [],
+    },
+  };
+
+  db_connect
+    .collection("users")
+    .updateOne(myquery, newvalues, function (err, res) {
+      if (err) throw err;
+      console.log("1 document updated");
+      response.json(res);
+    });
+ });
+
+ recordRoutes.route("/day-activities/:name").post(function (req, response) {
+  let db_connect = dbo.getDb();
+  let myquery = { name: req.params.name };
+  let newvalues = {
+    $push: {
+      day_activities: { tasks: req.body.values, date: new Date() },
     },
   };
 

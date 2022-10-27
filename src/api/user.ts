@@ -22,7 +22,7 @@ export const postUser = async (value: string) => {
 
 export const setProbableActivities = async (values: string[], id: string) => {
   const res = await fetch(
-    `${import.meta.env.VITE_URL}/update/${id}`,
+    `${import.meta.env.VITE_URL}/probable-actvities/${id}`,
     {
       headers: {
         'Content-Type': 'application/json'
@@ -30,6 +30,27 @@ export const setProbableActivities = async (values: string[], id: string) => {
       method: "POST",
       body: JSON.stringify({ values }),
     }
+  );
+  return await res.json();
+}
+
+export const setTodayActivities = async (values: string[], id: string) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_URL}/day-activities/${id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({ values }),
+    }
+  );
+  return await res.json();
+}
+
+export const getTodayActivities = async (id: string) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_URL}/today-activities/${id}`,
   );
   return await res.json();
 }

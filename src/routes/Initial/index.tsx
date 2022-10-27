@@ -22,7 +22,7 @@ function Initial() {
   const handleRowClick = (el: string) => setActivities((prev) => [...prev, el]);
   const handleButtonClick = async () => {
     await setProbableActivities(activities, id);
-    navigate("/daily");
+    navigate("/daily-select");
   };
 
   return (
